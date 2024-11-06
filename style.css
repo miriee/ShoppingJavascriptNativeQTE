@@ -18,7 +18,6 @@ body {
     flex-basis: 70%;
     margin: 0 1%;
     font-weight: bold;
-
     display: flex;
     justify-content: space-between;
 }
@@ -36,7 +35,6 @@ li {
     list-style: none;
     padding: 0 15px;
     margin: 0 2%;
-    /* border: 1px solid; */
 }
 
 a {
@@ -55,28 +53,11 @@ a {
     flex-wrap: wrap;
     text-align: center;
     justify-content: space-between;
-    /* max-width: 1000px;
-    margin: auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between; */
-}
-
-.card {
-    /* flex-basis: 25%;
-    border: 1px solid;
-    margin: 3% 0;
-    text-align: center;
-    padding: 1%; */
 }
 
 .imgwidth {
     width: 80%;
     height: 150px;
-}
-
-.display {
-    /* display: none; */
 }
 
 .affichecard {

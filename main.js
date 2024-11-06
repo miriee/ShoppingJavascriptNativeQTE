@@ -1,89 +1,13 @@
-// import products from "./data.json" assert { type: "json" };
 import products from "./data.json" with { type: "json" };
 
 let blocArticle = document.querySelector('.container');
 let divListeCard = document.querySelector('.offcanvas-body');
 
-// let product1 = {
-//     urlImage: "https://tdiscount.tn/blog/wp-content/uploads/2022/07/pc-1024x585.jpg",
-//     title: "Clavier souris Casque",
-//     prix: "300 DT"
-// }
-
-// let product2 = {
-//     urlImage: "https://tn.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/17/3967/1.jpg?6886",
-//     title: "Sac à Dos PC Portable",
-//     prix: "69 DT"
-// }
-// let product3 = {
-//     urlImage: "https://mk-media.mytek.tn/media/catalog/product/cache/8be3f98b14227a82112b46963246dfe1/a/d/adaptateur-de-charge-xiaomi-fast-charge-33w-type-c--type-a---blanc1.jpg",
-//     title: "Adaptateur De Charge XIAOMI",
-//     prix: "59 DT"
-// }
-
-// let product4 = {
-//     urlImage: "https://mk-media.mytek.tn/media/catalog/product/cache/8be3f98b14227a82112b46963246dfe1/6/8/68132_9ns1drim4k8fbl3d_1_1.jpg",
-//     title: "disque Dur Externe Anti-choc Adata Hd330 1to Usb 3.2 - Rouge",
-//     prix: "189 DT"
-// }
-// let product5 = {
-//     urlImage: "https://tn.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/50/2067/1.jpg",
-//     title: "Support Pour Pc Portable",
-//     prix: "68 DT"
-// }
-
-// let product6 = {
-//     urlImage: "https://media.ouest-france.fr/v1/pictures/MjAyMzA5ZGQwNDBkMDcwMDBhODNiYzVhYWE0MTYzMmZiMGZlMGY",
-//     title: "Support Pc",
-//     prix: "1200 DT"
-// }
-
-// let products = [product1, product2, product3, product4, product5, product6];
-
-
 let listCard = JSON.parse(localStorage.getItem('listCard')) || [];
-
-
-// affichage des products card avec la boucle for
-// for (let i = 0; i < products.length; i++) {
-//     const card = document.createElement("div");
-//     // card.style.textAlign = "center";
-//     card.classList.add("affichecard");
-//     card.style.border = "2px solid green"
-
-//     const img = document.createElement("img");
-//     img.src = products[i].urlImage;
-//     img.classList.add("imgwidth");
-
-//     const title = document.createElement("p");
-//     title.innerHTML = products[i].title;
-
-//     const price = document.createElement("p");
-//     price.innerHTML = products[i].prix;
-
-//     const btn = document.createElement("button");
-//     btn.innerHTML = "Ajouter au panier";
-//     btn.setAttribute("class", "btn btn-success")
-//     btn.addEventListener("click", () => {
-//         divListeCard.innerHTML = ""
-//         listCard.push(products[i])
-//         localStorage.setItem("listCard", JSON.stringify(listCard));
-
-//         // location.reload();
-//         afficheListCard()
-//     })
-
-//     blocArticle.appendChild(card);
-//     card.appendChild(img);
-//     card.appendChild(title);
-//     card.appendChild(price);
-//     card.appendChild(btn);
-// }
 
 // affichage des products card avec la method map
 products.map((oneProduct) => {
     const card = document.createElement("div");
-    // card.style.textAlign = "center";
     card.classList.add("affichecard");
     card.style.border = "2px solid green"
 
@@ -111,21 +35,18 @@ products.map((oneProduct) => {
 
 function addPanier(oneProduct) {
     divListeCard.innerHTML = ""
-    // listCard.push(oneProduct)
 
     // index de l'element ajouter
     let index = listCard.findIndex(item => item.title === oneProduct.title);
 
-    // if index === -1 => l'objet n'existe pas dans le localstorage
     if (index === -1) {
         listCard = [...listCard, { ...oneProduct, quantity: 1 }];
-    } else { // else => l'objet existe dans le localstorage
+    } else {
         listCard[index] = { ...oneProduct, quantity: listCard[index].quantity + 1 };
     }
     localStorage.setItem("listCard", JSON.stringify(listCard));
     afficheListCard()
 }
-
 
 // Affichage liste card panier
 let tabPrice = []
@@ -202,7 +123,6 @@ function afficheListCard() {
             // delete one element
             deleteOneProduct.addEventListener("click", () => deleteProduct(j))
             const divQTE = document.createElement('div')
-            // divQTE.style.width = "100px"
 
             div.appendChild(image)
             div.appendChild(divQTE)
@@ -211,7 +131,6 @@ function afficheListCard() {
             divQTE.appendChild(btnAdd)
             div.appendChild(prix)
             div.appendChild(deleteOneProduct)
-
 
             divListeCard.appendChild(div);
 
@@ -227,7 +146,6 @@ function afficheListCard() {
         total.innerHTML = "Total à payer : " + "      " + totalSomme + " DT"
         divListeCard.appendChild(total)
 
-
         let deleteAll = document.createElement('button');
         deleteAll.setAttribute('class', "btn btn-danger")
         deleteAll.innerHTML = "Vider le panier"
@@ -238,18 +156,13 @@ function afficheListCard() {
         h3.innerHTML = "LISTE VIDE"
         divListeCard.appendChild(h3)
     }
-
 }
 
 function deleteProduct(j) {
     listCard.splice(j, 1);
     localStorage.setItem('listCard', JSON.stringify(listCard));
-    // totalSomme = 0
-    // calculTotal()
     divListeCard.innerHTML = ""
     afficheListCard()
-    // location.reload()
-
 }
 
 let totalSomme
@@ -257,7 +170,6 @@ let totalSomme
 function calculTotal() {
     if (listCard.length > 0) {
         listCard.map((oneProduct) => {
-            // parseFloat(oneProduct.prix)
             tabPrice = [...tabPrice, parseFloat(oneProduct.prix) * oneProduct.quantity]
         })
         totalSomme = tabPrice.reduce(
@@ -272,7 +184,5 @@ afficheListCard()
 function viderPanier() {
     listCard = []
     localStorage.setItem('listCard', JSON.stringify(listCard));
-    // location.reload()
     afficheListCard()
-    // alert("Panier vide")
 }
