@@ -100,26 +100,7 @@ products.map((oneProduct) => {
     const btn = document.createElement("button");
     btn.innerHTML = "Ajouter au panier";
     btn.setAttribute("class", "btn btn-success")
-    btn.addEventListener("click", () => {
-        divListeCard.innerHTML = ""
-        // listCard.push(oneProduct)
-
-        // index de l'element ajouter
-        let index = listCard.findIndex(item => item.title === oneProduct.title);
-
-        // if index === -1 => l'objet n'existe pas dans le localstorage
-        if (index === -1) {
-            listCard = [...listCard, { ...oneProduct, quantity: 1 }];
-        } else { // else => l'objet existe dans le localstorage
-            listCard[index] = { ...oneProduct, quantity: listCard[index].quantity + 1 };
-        }
-
-
-
-        localStorage.setItem("listCard", JSON.stringify(listCard));
-
-        afficheListCard()
-    })
+    btn.addEventListener("click", () => addPanier(oneProduct))
 
     blocArticle.appendChild(card);
     card.appendChild(img);
@@ -127,6 +108,23 @@ products.map((oneProduct) => {
     card.appendChild(price);
     card.appendChild(btn);
 })
+
+function addPanier(oneProduct) {
+    divListeCard.innerHTML = ""
+    // listCard.push(oneProduct)
+
+    // index de l'element ajouter
+    let index = listCard.findIndex(item => item.title === oneProduct.title);
+
+    // if index === -1 => l'objet n'existe pas dans le localstorage
+    if (index === -1) {
+        listCard = [...listCard, { ...oneProduct, quantity: 1 }];
+    } else { // else => l'objet existe dans le localstorage
+        listCard[index] = { ...oneProduct, quantity: listCard[index].quantity + 1 };
+    }
+    localStorage.setItem("listCard", JSON.stringify(listCard));
+    afficheListCard()
+}
 
 
 // Affichage liste card panier
@@ -167,15 +165,33 @@ function afficheListCard() {
             div.style.height = "100px"
 
             const image = document.createElement('img');
-            image.style.width = "150px"
+            image.style.width = "125px"
             image.style.height = "100%"
             image.src = listCard[j].urlImage;
 
+            const btnAdd = document.createElement('i');
+            btnAdd.setAttribute("class", "fa fa-plus-circle")
+            btnAdd.addEventListener("click", () => addPanier(listCard[j]));
 
-            const qte = document.createElement("p");
+            const qte = document.createElement("span");
+            qte.style.paddingInline = "2px";
             qte.innerHTML = listCard[j].quantity;
 
+            const btnRemove = document.createElement('i');
+            btnRemove.setAttribute("class", "fa fa-minus-circle")
+            btnRemove.addEventListener("click", () => {
+                if (listCard[j].quantity > 1) {
+                    listCard[j].quantity--
+                    console.log(listCard[j].quantity);
+                    localStorage.setItem("listCard", JSON.stringify(listCard));
+                    afficheListCard();
+                } else {
+                    deleteProduct(j)
+                }
+            });
+
             const prix = document.createElement('p');
+            prix.style.margin = "0"
             prix.innerHTML = parseFloat(listCard[j].prix) * listCard[j].quantity + "DT";
 
             // icon delete 
@@ -184,21 +200,18 @@ function afficheListCard() {
             deleteOneProduct.style.width = "30px"
             deleteOneProduct.style.color = "black"
             // delete one element
-            deleteOneProduct.addEventListener("click", () => {
-                listCard.splice(j, 1);
-                localStorage.setItem('listCard', JSON.stringify(listCard));
-                // totalSomme = 0
-                // calculTotal()
-                divListeCard.innerHTML = ""
-                afficheListCard()
-                // location.reload()
-
-            })
+            deleteOneProduct.addEventListener("click", () => deleteProduct(j))
+            const divQTE = document.createElement('div')
+            // divQTE.style.width = "100px"
 
             div.appendChild(image)
-            div.appendChild(qte)
+            div.appendChild(divQTE)
+            divQTE.appendChild(btnRemove)
+            divQTE.appendChild(qte)
+            divQTE.appendChild(btnAdd)
             div.appendChild(prix)
             div.appendChild(deleteOneProduct)
+
 
             divListeCard.appendChild(div);
 
@@ -220,20 +233,32 @@ function afficheListCard() {
         deleteAll.innerHTML = "Vider le panier"
         deleteAll.addEventListener('click', viderPanier)
         divListeCard.appendChild(deleteAll)
-    }else{
+    } else {
         let h3 = document.createElement('h3');
         h3.innerHTML = "LISTE VIDE"
         divListeCard.appendChild(h3)
     }
 
 }
+
+function deleteProduct(j) {
+    listCard.splice(j, 1);
+    localStorage.setItem('listCard', JSON.stringify(listCard));
+    // totalSomme = 0
+    // calculTotal()
+    divListeCard.innerHTML = ""
+    afficheListCard()
+    // location.reload()
+
+}
+
 let totalSomme
 
 function calculTotal() {
     if (listCard.length > 0) {
         listCard.map((oneProduct) => {
             // parseFloat(oneProduct.prix)
-            tabPrice = [...tabPrice, parseFloat(oneProduct.prix)*oneProduct.quantity]
+            tabPrice = [...tabPrice, parseFloat(oneProduct.prix) * oneProduct.quantity]
         })
         totalSomme = tabPrice.reduce(
             (accumulator, currentValue) => accumulator + currentValue,

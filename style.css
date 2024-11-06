@@ -84,3 +84,6 @@ a {
     padding: 2%;
     margin: 2%;
 }
+input {
+    width: 30px;
+}
