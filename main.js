@@ -3,8 +3,6 @@ import products from "./data.json" with { type: "json" };
 
 let blocArticle = document.querySelector('.container');
 let divListeCard = document.querySelector('.offcanvas-body');
-// console.log(blocArticle);
-// console.log(divListeCard);
 
 // let product1 = {
 //     urlImage: "https://tdiscount.tn/blog/wp-content/uploads/2022/07/pc-1024x585.jpg",
@@ -43,9 +41,7 @@ let divListeCard = document.querySelector('.offcanvas-body');
 // let products = [product1, product2, product3, product4, product5, product6];
 
 
-
 let listCard = JSON.parse(localStorage.getItem('listCard')) || [];
-// console.log(listCard);
 
 
 // affichage des products card avec la boucle for
@@ -70,7 +66,6 @@ let listCard = JSON.parse(localStorage.getItem('listCard')) || [];
 //     btn.setAttribute("class", "btn btn-success")
 //     btn.addEventListener("click", () => {
 //         divListeCard.innerHTML = ""
-//         // console.log(products[i]);
 //         listCard.push(products[i])
 //         localStorage.setItem("listCard", JSON.stringify(listCard));
 
@@ -107,9 +102,7 @@ products.map((oneProduct) => {
     btn.setAttribute("class", "btn btn-success")
     btn.addEventListener("click", () => {
         divListeCard.innerHTML = ""
-        // console.log(oneProduct);
         // listCard.push(oneProduct)
-
 
         // index de l'element ajouter
         let index = listCard.findIndex(item => item.title === oneProduct.title);
@@ -192,7 +185,6 @@ function afficheListCard() {
             deleteOneProduct.style.color = "black"
             // delete one element
             deleteOneProduct.addEventListener("click", () => {
-                console.log(j);
                 listCard.splice(j, 1);
                 localStorage.setItem('listCard', JSON.stringify(listCard));
                 // totalSomme = 0
@@ -241,11 +233,8 @@ function calculTotal() {
     if (listCard.length > 0) {
         listCard.map((oneProduct) => {
             // parseFloat(oneProduct.prix)
-            console.log(parseFloat(oneProduct.prix));
             tabPrice = [...tabPrice, parseFloat(oneProduct.prix)*oneProduct.quantity]
         })
-        console.log(listCard);
-        console.log(tabPrice);
         totalSomme = tabPrice.reduce(
             (accumulator, currentValue) => accumulator + currentValue,
             0,
