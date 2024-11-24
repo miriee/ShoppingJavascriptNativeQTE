@@ -5,6 +5,8 @@ let divListeCard = document.querySelector('.offcanvas-body');
 
 let listCard = JSON.parse(localStorage.getItem('listCard')) || [];
 
+let badge = document.querySelector('.badge');
+
 // affichage des products card avec la method map
 products.map((oneProduct) => {
     const card = document.createElement("div");
@@ -52,6 +54,7 @@ function addPanier(oneProduct) {
 let tabPrice = []
 function afficheListCard() {
     divListeCard.innerHTML = ""
+    badge.innerHTML = listCard.length
     if (listCard.length > 0) {
         const tab = document.createElement('div');
         tab.style.display = "flex";
